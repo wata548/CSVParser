@@ -1,4 +1,4 @@
-﻿This library is parse and Load CSV data
+CSVParser
 ==================================================
 
 Package
