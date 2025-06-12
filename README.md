@@ -57,7 +57,7 @@ CSV.DeserializeToDictionary<T>(rawCSVData, "SerialNumber", out var keyType);
 (it also return object, so you should cast to Dictionary<keyType, T>)
 
 --------------------------------------------------
-Generating(3 option)
+Generating
 ==================================================
 1. CSVFile(In Assets file) - Path type
 generate class file by csv format
@@ -95,7 +95,7 @@ generate class file by csv format
    
 --------------------------------------------------
      
-Generating and Sync Scriptable Object(3 option)
+Generating and Sync Scriptable Object
 ==================================================
 
 1. CSVFile(In Assets file) - Path type
