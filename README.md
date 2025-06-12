@@ -8,12 +8,21 @@ Package
 
 --------------------------------------------------
 
-format:  
-
+CSV Format rule:  
+==================================================
     first row: field or property name line  
     second row: field or property type line  
-(int / float / string is wrong, use Int32 / Single / String) 
+    (Type name int / float / string is wrong, use Int32 / Single / String) 
     over third lines: data line
+
+Example:
+
+|SerialNumber|Name|Age|
+|------|---|---|
+|Int32|String|Int32|
+|1|1Human1|10|
+|2|Human2|20|
+|3|Human3|30|
 
 Parsing
 ==================================================
