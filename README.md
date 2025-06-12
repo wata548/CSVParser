@@ -1,28 +1,30 @@
 ﻿This library is parse and Load CSV data
-
-format:
-    first row: field or property name line
-    second row: field or property type line
-           (int / float / string is wrong, use Int32 / Single / String) 
-    over third lines: data line
-
 ==================================================
 
+
+format:  
+
+    first row: field or property name line  
+    second row: field or property type line  
+(int / float / string is wrong, use Int32 / Single / String) 
+    over third lines: data line
+
 Parsing
+==================================================
 
---------------------------------------------------
-1. Parse raw csv string to 2 dimension list,
-(string -> 2d list)
+1. Parse raw csv string to 2 dimension list (string &rarr; 2d list)  
 
+```cs
 var rawCSVData = File.ReadAllText(path);
 CSV.Parse(rawCSVData);
-
+```
 --------------------------------------------------
-2. Parse raw csv string or csv list(2d) to your class list
-(string / 2d list -> class list(1d))
+2. Parse raw csv string or csv list(2d) to your class list (string / 2d list &rarr; class list(1d))  
 
+```cs
 var rawCSVData = File.ReadAllText(path);
 CSV.DeserializeToList<T>(rawCSVData);
+```
 
 (it return object, so you should cast to List<T>)
 (it find field and setter property, 
@@ -30,18 +32,18 @@ if some column's type name point readonly or don't have setter properties it may
 
 --------------------------------------------------
 3. Parse raw csv string or csv list(2d) to dictionary
-(string / 2d list -> my class dictionary)
+(string / 2d list &rarr; my class dictionary)
 
+```cs
 var rawCSVData = File.ReadAllText(path);
 CSV.DeserializeToDictionary<T>(rawCSVData, "SerialNumber", out var keyType);
+```
 
 (it also return object, so you should cast to Dictionary<keyType, T>)
 
-==================================================
-
+--------------------------------------------------
 Generating(3 option)
-
---------------------------------------------------
+==================================================
 1. CSVFile(In Assets file) - Path type
 generate class file by csv format
 
@@ -50,8 +52,8 @@ generate class file by csv format
     2) typing path and result's type name
     3) push 'Generate'Button
 
-    => Scripts/AutoCSVOutputScripts/(TypeName).cs file generated
-    
+    $\Rightarrow$ Scripts/AutoCSVOutputScripts/(TypeName).cs file generated
+   
 --------------------------------------------------
  2. CSVFile(In Assets file) - Asset type
  generate class file by csv format
@@ -61,8 +63,8 @@ generate class file by csv format
      2) drag your file and type result's type name
      3) push 'Generate'Button
  
-     => 'Scripts/AutoCSVOutputScripts/(TypeName).cs' file generated   
-
+     $\Rightarrow$ 'Scripts/AutoCSVOutputScripts/(TypeName).cs' file generated
+    
 --------------------------------------------------
 3. GoogleSpreadSheet
  generate class file by csv format
@@ -74,14 +76,13 @@ generate class file by csv format
         And PageName
      3) push 'Generate'Button
  
-     => 'Scripts/AutoCSVOutputScripts/(TypeName).cs' file generated   
+     $\Rightarrow$ 'Scripts/AutoCSVOutputScripts/(TypeName).cs' file generated
+   
+--------------------------------------------------
      
-     
+Generating and Sync Scriptable Object(3 option)
 ==================================================
 
-Generating and Sync Scriptable Object(3 option)
-
---------------------------------------------------
 1. CSVFile(In Assets file) - Path type
 generate class file by csv format
 
@@ -90,7 +91,7 @@ generate class file by csv format
     2) typing path and result's type name
     3) push 'Generate'Button
 
-    => Scripts/AutoCSVOutputScripts/(TypeName).cs file generated
+    $\Rightarrow$ Scripts/AutoCSVOutputScripts/(TypeName).cs file generated
     
 --------------------------------------------------
  2. CSVFile(In Assets file) - Asset type
@@ -101,7 +102,7 @@ generate class file by csv format
      2) drag your file and type result's type name
      3) push 'Generate'Button
  
-     => 'Scripts/AutoCSVOutputScripts/(TypeName).cs' file generated   
+     $\Rightarrow$ 'Scripts/AutoCSVOutputScripts/(TypeName).cs' file generated   
 
 --------------------------------------------------
 3. GoogleSpreadSheet
@@ -114,5 +115,5 @@ generate class file by csv format
         And PageName
      3) push 'Generate'Button
  
-     => 'Scripts/AutoCSVOutputScripts/(TypeName).cs' file generated   
+     $\Rightarrow$ 'Scripts/AutoCSVOutputScripts/(TypeName).cs' file generated   
      
