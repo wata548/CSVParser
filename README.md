@@ -1,6 +1,6 @@
 CSVParser
 ==================================================
-This Unity Library.
+This library for Unity.  
 Parse CSV, And Make script by CSV data, even surpport scriptable object 
 
 Package
