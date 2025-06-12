@@ -18,7 +18,7 @@ CSV Format rule:
 Example:
 
 |SerialNumber|Name|Age|
-|------|---|---|
+|:-:|:------:|:--:|
 |Int32|String|Int32|
 |1|1Human1|10|
 |2|Human2|20|
