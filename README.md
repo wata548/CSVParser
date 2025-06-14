@@ -38,6 +38,10 @@ CSV.Parse(rawCSVData);
 --------------------------------------------------
 2. Parse raw csv string or csv list(2d) to your class list (string / 2d list &rarr; class list(1d))  
 
+_!Warnning!  
+target class must have empty constructor_
+
+
 ```cs
 var rawCSVData = File.ReadAllText(path);
 CSV.DeserializeToList<T>(rawCSVData);
