@@ -5,14 +5,11 @@ using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
 using CSVData.Extensions;
-using Newtonsoft.Json;
-using SpreadSheetType = CSVData.GoogleSpreadSheetLoader.SpreadSheetType;
 
 namespace CSVData {
 
-    [CreateAssetMenu(menuName = "Loader/Generator/Path")]
+    [CreateAssetMenu(menuName = "CSV/Loader/Generator/Path")]
     public class CSVPathCodeGenerator : CodeGenerateLoaderBase {
         
         [Header("Key: CSV File path, Value: type name(empty is recommanded)")]

@@ -17,12 +17,12 @@ namespace CSVData {
             GetTable(Type.GetType(targettypeName), directory);
 
         public static ScriptableObject GetTable<T>(string directory = DefaultDirectory)
-            where T : CSVListData =>
+            where T : ICSVListData =>
             GetTable(typeof(T));
         
         public static ScriptableObject GetTable(Type targetType, string diretory = DefaultDirectory) {
 
-            var tableType = Type.GetType($"{targetType.Name}Table, Assembly-CSharp");
+            var tableType = Type.GetType($"{targetType}Table");
 
             if (targetType == null || tableType == null) {
                 throw new TypeAccessException($"'{targetType}' or '{targetType}Table' type isn't exist ");
@@ -80,10 +80,10 @@ namespace CSVData {
         //2d
         public static void SyncCSVObjectDictionary(string targetTypeName, List<List<string>> datas,
             string directory = DefaultDirectory) =>
-            SyncCSVObjectDictionary(Type.GetType($"{targetTypeName}, Assembly-CSharp"), datas, directory);
+            SyncCSVObjectDictionary(Type.GetType($"{targetTypeName}") ?? Type.GetType($"Wata.{targetTypeName}"), datas, directory);
         
         public static void SyncCSVObjectDictionary<T>(List<List<string>> datas, string directory = DefaultDirectory)
-            where T: CSVDictionaryData =>
+            where T: ICSVDictionaryData =>
             SyncCSVObjectDictionary(typeof(T), datas, directory);
         
         public static void SyncCSVObjectDictionary(Type targetType, List<List<string>> datas,
@@ -93,7 +93,7 @@ namespace CSVData {
             if (string.IsNullOrWhiteSpace(directory))
                 directory = DefaultDirectory;
 
-            if (targetType.BaseType != (typeof(CSVDictionaryData))) {
+            if (targetType.GetInterface(nameof(ICSVDictionaryData)) is null) {
 
                 throw new TypeLoadException($"This type({targetType.Name}) isn't CSVDictionaryObject type");
                 //return;
@@ -136,7 +136,7 @@ namespace CSVData {
             SyncCSVObjectList(Type.GetType($"{typeName}, Assembly-CSharp"), Parse(datas), directory);
         
         public static void SyncCSVObjectList<T>(string datas, string directory = DefaultDirectory)
-            where T : CSVListData =>
+            where T : ICSVListData =>
             SyncCSVObjectList(typeof(T), Parse(datas), directory);
         
         public static void SyncCSVObjectList(Type type,string datas, string directory = DefaultDirectory) =>
@@ -147,7 +147,7 @@ namespace CSVData {
             SyncCSVObjectList(Type.GetType($"{typeName}, Assembly-CSharp"), Parse(datas), directory);
         
         public static void SyncCSVObjectList<T>(List<string> datas, string directory = DefaultDirectory)
-            where T : CSVListData =>
+            where T : ICSVListData =>
             SyncCSVObjectList(typeof(T), Parse(datas), directory);
         
         public static void SyncCSVObjectList(Type type,List<string> datas, string directory = DefaultDirectory) =>
@@ -155,19 +155,19 @@ namespace CSVData {
         
         //2d
         public static void SyncCSVObjectList<T>(List<List<string>> datas, string directory = DefaultDirectory)
-            where T : CSVListData =>
+            where T : ICSVListData =>
             SyncCSVObjectList(typeof(T), datas, directory);
         
         public static void SyncCSVObjectList(string targetTypeName, List<List<string>> datas,
             string directory = DefaultDirectory) =>
-            SyncCSVObjectList(Type.GetType(targetTypeName), datas, directory);
+            SyncCSVObjectList(Type.GetType(targetTypeName) ?? Type.GetType($"Wata.{targetTypeName}"), datas, directory);
         
         public static void SyncCSVObjectList(Type targetType, List<List<string>> datas,
             string directory = DefaultDirectory) {
             if (string.IsNullOrWhiteSpace(directory))
                 directory = DefaultDirectory;
 
-            if (targetType.BaseType == typeof(CSVDictionaryData)) {
+            if (targetType.BaseType == typeof(ICSVDictionaryData)) {
                 
                 Debug.Log($"This type({targetType.Name}) is CSVDictionaryObject type,\nRecommend change CSVObject Type");
             }

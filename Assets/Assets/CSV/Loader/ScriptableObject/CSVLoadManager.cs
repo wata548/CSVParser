@@ -8,7 +8,7 @@ using Color = System.Drawing.Color;
 
 namespace CSVData {
     
-    [CreateAssetMenu(menuName = "Loader/Manager")]
+    [CreateAssetMenu(menuName = "CSV/Manager")]
     public class CSVLoadManager: ScriptableObject {
 
         [Header("Result table path")]

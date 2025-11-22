@@ -12,7 +12,6 @@ namespace CSVData {
         private const string DefaultPath = "Assets/Scripts/AutoCSVOutputScript"; 
         public static void GenerateCode(string targetTypeName, List<List<string>> datas, CSVDataStyle dataStyle = CSVDataStyle.List) {
 
-            string result = DefaultHeader();
             if (dataStyle == CSVDataStyle.Enum) {
                 
                 GenerateEnum(targetTypeName, datas);
@@ -50,23 +49,23 @@ namespace CSVData {
         private static void GenerateDataType(string targetTypeName, List<List<string>> datas, CSVDataStyle dataStyle) {
 
             StringBuilder codeGenerator = new();
-            codeGenerator.AppendLine("[GeneratedCode]");
-            codeGenerator.AppendLine("[Serializable]");
+            codeGenerator.AppendLine("\t[GeneratedCode]");
+            codeGenerator.AppendLine("\t[Serializable]");
             
-            codeGenerator.AppendLine($"public class {targetTypeName} {{");
+            codeGenerator.AppendLine($"\tpublic class {targetTypeName} {{");
             for (int i = 0; i < datas[0].Count; i++) {
              
                 if(string.IsNullOrWhiteSpace(datas[0][i]))
                     continue;
                 
-                if(datas[0][i] == "SerialNumber" && dataStyle == CSVDataStyle.Dictionary)
-                    continue;
+                //if(datas[0][i] == "SerialNumber" && dataStyle == CSVDataStyle.Dictionary)
+                //continue;
                 
                 codeGenerator.AppendLine("\t[field: SerializeField]");
                 codeGenerator.AppendLine($"\tpublic {datas[1][i]} {datas[0][i]} {{ get; private set; }}");
                 
             }
-            codeGenerator.AppendLine("};");
+            codeGenerator.AppendLine("\t};");
 
             var result = DefaultHeader() + codeGenerator.ToString();
 

@@ -1,17 +1,13 @@
 ﻿#if UNITY_EDITOR
 
-using System;
-using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Net.Http;
 using CSVData.Extensions;
-using Newtonsoft.Json;
-using SpreadSheetType = CSVData.GoogleSpreadSheetLoader.SpreadSheetType;
 
 namespace CSVData {
 
-    [CreateAssetMenu(menuName = "Loader/Generator/SpreadSheet")]
+    [CreateAssetMenu(menuName = "CSV/Loader/Generator/SpreadSheet")]
     public class SpreadSheetCodeGenerator : CodeGenerateLoaderBase {
         
         [SerializeField] private string _apiKey;
@@ -24,9 +20,6 @@ namespace CSVData {
 
         public override void Generate() {
             
-            string urlFormat =
-                $"https://sheets.googleapis.com/v4/spreadsheets/{_path}/values/{{0}}?key={_apiKey}";
-
             var httpClient = new HttpClient();
             
             foreach (var sheet in _infos) {
@@ -38,23 +31,10 @@ namespace CSVData {
                     sheet.Value = sheet.Key;
 
                 sheet.Value = sheet.Value.FixTypeName();
-                    
-                string url = string.Format(urlFormat, sheet.Key);
-             
-                //get spread sheet data
-                var spreadSheetData = "";
-                try {
 
-                    spreadSheetData = httpClient.GetStringAsync(url).Result;
-                }
-                catch (Exception){
-                    Debug.Log($"{url} call generate bug");
-                    throw;
-                }    
-                var csvData = JsonConvert
-                    .DeserializeObject<SpreadSheetType>(spreadSheetData).values;
+                var data = SpreadSheet.LoadData(_path, sheet.Key, _apiKey);
 
-                CSV.GenerateCode(sheet.Value,csvData);
+                CSV.GenerateCode(sheet.Value, data);
             }
         }
     }

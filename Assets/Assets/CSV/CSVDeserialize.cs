@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 using CSVData.Extensions;
 using Object = System.Object;
 
@@ -18,7 +19,6 @@ namespace CSVData {
             Deserialize(typeof(T), headerNames, values, ignoreSomeFieldError);
         
         private static Object Deserialize(Type targetType, List<string> headerNames, List<string> values,
-            
             bool ignoreSomeFieldError = true) {
 
             var defaultReflectionFlag = BindingFlags.Instance 
@@ -46,6 +46,7 @@ namespace CSVData {
                         targetType.GetProperty(headerNames[i], defaultReflectionFlag);
 
                     if (propertyInfo == null || !propertyInfo.CanWrite) {
+                        Debug.LogError($"{headerNames[i]} isn't exist or can't write. ({propertyInfo})");
                         if (!ignoreSomeFieldError)
                             throw new MissingFieldException($"This '{headerNames[i]}' isn't exist on {result}Type");
                         continue;        
@@ -53,6 +54,7 @@ namespace CSVData {
 
                     var propertyType = propertyInfo.PropertyType;
                     var propertyData = CSharpExtension.Parse(propertyType, values[i]);
+                    
                     propertyInfo.SetValue(result, propertyData);
                 }
 
@@ -63,6 +65,9 @@ namespace CSVData {
                     fieldInfo.SetValue(result, fieldData);
                 }
             }
+
+            if(result is ICSVListData target)
+                target.PostProcessing();
 
             return result;
         }
@@ -119,6 +124,12 @@ namespace CSVData {
 
             return list;
         }
+        
+        public static Object DeserializeToListBySpreadSheet(Type targetType, string path, string sheet, string key,
+            bool ignoreSomeError = true) {
+            var data = SpreadSheet.LoadData(path, sheet, key);
+            return DeserializeToList(targetType, data, ignoreSomeError);
+        }
 
         #endregion
 
@@ -155,9 +166,9 @@ namespace CSVData {
             out Type keyType, bool ignoreSomeError  = true) =>
             DeserializeToDictionary(Type.GetType(typeName), Parse(data), primaryKey, out keyType, ignoreSomeError);
         
-        public static Object DeserializeToDictionary<T>(List<string> data, string primaryKey, 
+        public static Dictionary<Object, T> DeserializeToDictionary<T>(List<string> data, string primaryKey, 
             out Type keyType, bool ignoreSomeError  = true) =>
-            DeserializeToDictionary(typeof(T), Parse(data), primaryKey, out keyType, ignoreSomeError);
+            (Dictionary<Object, T>)DeserializeToDictionary(typeof(T), Parse(data), primaryKey, out keyType, ignoreSomeError);
         
         public static Object DeserializeToDictionary(Type type, List<string> data, string primaryKey, 
             out Type keyType, bool ignoreSomeError  = true) =>
@@ -168,9 +179,9 @@ namespace CSVData {
             bool ignoreSomeError  = true) =>
             DeserializeToDictionary(Type.GetType(typeName), Parse(data), primaryKey, out var keyType, ignoreSomeError);
         
-        public static Object DeserializeToDictionary<T>(List<string> data, string primaryKey, 
+        public static Dictionary<Object, T> DeserializeToDictionary<T>(List<string> data, string primaryKey, 
             bool ignoreSomeError  = true) =>
-            DeserializeToDictionary(typeof(T), Parse(data), primaryKey, out var keyType, ignoreSomeError);
+            (Dictionary<Object, T>)DeserializeToDictionary(typeof(T), Parse(data), primaryKey, out var keyType, ignoreSomeError);
         
         public static Object DeserializeToDictionary(Type type, List<string> data, string primaryKey, 
             bool ignoreSomeError  = true) =>
@@ -194,9 +205,13 @@ namespace CSVData {
             out Type keyType, bool ignoreSomeError = true) =>
             DeserializeToDictionary(Type.GetType(typeName), datas, primaryKeyName, out keyType, ignoreSomeError);
 
-        public static Object DeserializeToDictionary<T>(List<List<string>> datas, string primaryKeyName,
-            out Type keyType, bool ignoreSomeError = true) =>
-            DeserializeToDictionary(typeof(T), datas, primaryKeyName, out keyType, ignoreSomeError);
+        public static Dictionary<Object, T> DeserializeToDictionary<T>(List<List<string>> datas, string primaryKeyName,
+            out Type keyType, bool ignoreSomeError = true) {
+
+            var output = DeserializeToDictionary(typeof(T), datas, primaryKeyName, out keyType, ignoreSomeError);
+            return (Dictionary<Object, T>)output;
+
+        }
         
         public static Object DeserializeToDictionary(Type targetType, List<List<string>> datas, string primaryKeyName,
             out Type keyType, bool ignoreSomeError = true) {
@@ -251,7 +266,12 @@ namespace CSVData {
 
             return result;
         }
-        
+
+        public static Object DeserializeToDictionaryBySpreadSheet(Type targetType, string path, string sheet, string key,
+            out Type keyType, string primaryKey = "SerialNumber", bool ignoreSomeError = true) {
+            var data = SpreadSheet.LoadData(path, sheet, key);
+            return DeserializeToDictionary(targetType, data, primaryKey, out keyType, ignoreSomeError);
+        }
         #endregion
     }
 }

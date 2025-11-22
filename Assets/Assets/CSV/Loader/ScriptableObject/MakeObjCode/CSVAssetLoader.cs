@@ -9,7 +9,7 @@ using DataType = UnityEngine.TextAsset;
 
 namespace CSVData {
     
-    [CreateAssetMenu(menuName = "Loader/CSVByAsset")]
+    [CreateAssetMenu(menuName = "CSV/Loader/CSVByAsset")]
     public class CSVAssetLoader: LoaderBase {
         
         [Header("RawData: csv File path, TargetTypeName: type name(empty is recommanded)")]

@@ -26,26 +26,24 @@ namespace CSVData {
                 Debug.Log($"complete {targetTypeName}(enum) Type making");
                 return;
             }
-
-            if (makeTable) {
-                
-                GenerateObjDataTable(targetTypeName, dataStyle);
-                Debug.Log($"complete {targetTypeName} Type making");
-            }
-            else
-                Debug.Log($"{targetTypeName} Type is already exist");
-
-            if (makeType) {
-                
+            
+            if (makeType) { 
                 GenerateObjDataType(targetTypeName, datas, dataStyle);
-                Debug.Log($"complete {targetTypeName}Table Type making");
+                Debug.Log($"complete {targetTypeName}Type making");
             }
             else
                 Debug.Log($"{targetTypeName}Table Type is already exist");
+            if (makeTable) {
+                
+                GenerateObjDataTable(targetTypeName, dataStyle);
+                Debug.Log($"complete {targetTypeName}Table  Type making");
+            }
+            else
+                Debug.Log($"{targetTypeName} Type is already exist");
         }
 
        private static void GenerateObjDataTable(string targetTypeName, CSVDataStyle dataStyle) {
-            
+           
             StringBuilder codeGenerator = new();
             codeGenerator.AppendLine("[GeneratedCode]");
             string inherit = dataStyle == CSVDataStyle.List ? "CSVListTable" : $"CSVDictionaryTable";
@@ -63,18 +61,18 @@ namespace CSVData {
             codeGenerator.AppendLine("[GeneratedCode]");
             codeGenerator.AppendLine("[Serializable]");
             
-            string inherit = dataStyle == CSVDataStyle.List ? "CSVListData" : "CSVDictionaryData";
+            string inherit = dataStyle == CSVDataStyle.List ? nameof(ICSVListData) : nameof(ICSVDictionaryData);
             codeGenerator.AppendLine($"public class {targetTypeName}: {inherit} {{");
             for (int i = 0; i < datas[0].Count; i++) {
              
                 if(string.IsNullOrWhiteSpace(datas[0][i]))
                     continue;
                 
-                if(datas[0][i] == "SerialNumber" && dataStyle == CSVDataStyle.Dictionary)
-                    continue;
+                //if(datas[0][i] == "SerialNumber" && dataStyle == CSVDataStyle.Dictionary)
+                //    continue;
                 
-                codeGenerator.AppendLine("\t[field: SerializeField]");
-                codeGenerator.AppendLine($"\tpublic {datas[1][i]} {datas[0][i]} {{ get; private set; }}");
+                codeGenerator.AppendLine("[field: SerializeField]");
+                codeGenerator.AppendLine($"public {datas[1][i]} {datas[0][i]} {{ get; private set; }}");
                 
             }
             codeGenerator.AppendLine("};");

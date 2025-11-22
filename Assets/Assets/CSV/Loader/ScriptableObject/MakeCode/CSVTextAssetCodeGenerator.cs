@@ -1,17 +1,11 @@
 ﻿#if UNITY_EDITOR
-
-using System;
-using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Net.Http;
 using CSVData.Extensions;
-using Newtonsoft.Json;
-using SpreadSheetType = CSVData.GoogleSpreadSheetLoader.SpreadSheetType;
 
 namespace CSVData {
 
-    [CreateAssetMenu(menuName = "Loader/Generator/File")]
+    [CreateAssetMenu(menuName = "CSV/Loader/Generator/File")]
     public class CSVTextAssetCodeGenerator : CodeGenerateLoaderBase {
         
         [Header("Key: CSV File, Value: type name(empty is recommanded)")]

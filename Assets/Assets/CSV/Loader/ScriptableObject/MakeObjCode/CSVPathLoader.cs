@@ -1,15 +1,15 @@
 ﻿#if UNITY_EDITOR
 
 using UnityEngine;
-using CSVData.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CSVData.Extensions;
 using DataType = System.String;
 
 namespace CSVData {
     
-    [CreateAssetMenu(menuName = "Loader/CSVByPath")]
+    [CreateAssetMenu(menuName = "CSV/Loader/CSVByPath")]
     public class CSVPathLoader: LoaderBase {
         
         [Header("RawData: csv File path, TargetTypeName: type name(empty is recommanded)")]

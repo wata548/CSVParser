@@ -12,7 +12,7 @@ namespace CSVData {
     
     
     
-    [CreateAssetMenu(menuName = "Loader/GoogleSpreadSheet")]
+    [CreateAssetMenu(menuName = "CSV/Loader/GoogleSpreadSheet")]
     public class GoogleSpreadSheetLoader: LoaderBase {
         
         
@@ -75,47 +75,26 @@ namespace CSVData {
         }
         
         public List<List<string>> GetData(LoadInfo<string> info, HttpClient httpClient) {
-            string urlFormat =
-                $"https://sheets.googleapis.com/v4/spreadsheets/{_path}/values/{{0}}?key={_apiKey}";
-
             bool isFirst = true;
             var csvData = new List<List<string>>();
             foreach (var sheet in info.RawDatas) {
                 
-                string url = string.Format(urlFormat, sheet);
-             
-                //get spread sheet data
-                var spreadSheetData = "";
-                try {
-
-                    spreadSheetData = httpClient.GetStringAsync(url).Result;
-                }
-                catch (Exception){
-                    Debug.Log($"{url} call generate bug");
-                    throw;
-                }    
-                var temp = JsonConvert
-                    .DeserializeObject<SpreadSheetType>(spreadSheetData).values;
+                var value = SpreadSheet.LoadData(_path, sheet, _apiKey);
 
                 if (!isFirst) {
-                    temp = temp
+                    value = value
                         .Skip(2)
                         .ToList();
                 }
                 isFirst = false;
 
-                csvData.AddRange(temp);
+                csvData.AddRange(value);
             }
 
             return csvData;
         }
         
-        public class SpreadSheetType {
-
-            public string range;
-            public string majorDimension;
-            public List<List<string>> values;
-        }
+        
     }
 }
 
