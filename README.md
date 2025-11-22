@@ -3,12 +3,6 @@ CSVParser
 This library for Unity.  
 Parse CSV, And Make script by CSV data, even surpport scriptable object 
 
-Package
-==================================================
-[Download](https://drive.google.com/file/d/1bE22XLaWCy8Gi1WqX_z6CUfR-vqRdpI-/view?usp=sharing)
-
---------------------------------------------------
-
 CSV Format rule:  
 ==================================================
     first row: field or property name line  
